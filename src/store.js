@@ -1,17 +1,19 @@
-import { createStore } from 'redux'
 
-const initialState = {
-  sidebarShow: 'responsive'
-}
+import rootReducer from './reducers'
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return {...state, ...rest }
-    default:
-      return state
-  }
-}
+const loggerMiddleware = createLogger();
 
-const store = createStore(changeState)
+
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(
+  thunkMiddleware,
+  loggerMiddleware
+))
 export default store
+
+
