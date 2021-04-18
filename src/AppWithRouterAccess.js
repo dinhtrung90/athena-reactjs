@@ -5,17 +5,19 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { oktaAuthConfig, oktaSignInConfig } from './config/config';
 import PrivateRoute from './components/private-route';
 import './scss/style.scss';
+import Home from './components/home';
 
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
   </div>
-)
+);
 
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 const Login = React.lazy(() => import('./views/pages/login/Login'));
 
+const Register = React.lazy(() => import('./views/pages/register/Register'));
 
 const oktaAuth = new OktaAuth(oktaAuthConfig);
 
@@ -25,26 +27,29 @@ const AppWithRouterAccess = () => {
   const customAuthHandler = () => {
     history.push('/login');
   };
-  
+
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri, window.location.origin));
   };
 
   return (
     <React.Suspense fallback={loading}>
-        <Security
-      oktaAuth={oktaAuth}
-      onAuthRequired={customAuthHandler}
-      restoreOriginalUri={restoreOriginalUri}
-    >
-      <Switch>
-        <PrivateRoute path='/' name="Home" component={TheLayout} />
-        <Route path='/login' render={() => <Login config={oktaSignInConfig} />} />
-        <Route path='/login/callback' component={LoginCallback} />
-      </Switch>
-    </Security>
+      <Security
+        oktaAuth={oktaAuth}
+        onAuthRequired={customAuthHandler}
+        restoreOriginalUri={restoreOriginalUri}>
+        <Switch>
+          <Route
+            exact
+            path="/login"
+            render={() => <Login config={oktaSignInConfig} />}
+          />
+          <Route exact path="/login/callback" component={LoginCallback} />
+
+          <PrivateRoute path="/" name="Home" component={TheLayout} />
+        </Switch>
+      </Security>
     </React.Suspense>
-    
   );
 };
 export default AppWithRouterAccess;

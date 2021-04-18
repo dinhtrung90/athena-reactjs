@@ -9,7 +9,16 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
+import { useOktaAuth } from '@okta/okta-react';
+
+
 const TheHeaderDropdown = () => {
+
+  const { oktaAuth } = useOktaAuth();
+
+  const handleLogout = async () => oktaAuth.signOut();
+
+
   return (
     <CDropdown
       inNav
@@ -80,7 +89,7 @@ const TheHeaderDropdown = () => {
           <CBadge color="primary" className="mfs-auto">42</CBadge>
         </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem>
+        <CDropdownItem onClick={handleLogout}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Lock Account
         </CDropdownItem>

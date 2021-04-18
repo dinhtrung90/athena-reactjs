@@ -3,14 +3,15 @@ import { Redirect } from 'react-router-dom';
 import { SecureRoute, useOktaAuth } from '@okta/okta-react';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { oktaAuth, authState } = useOktaAuth();
+  const { authState } = useOktaAuth();
 
-  if (authState.isPending) return null;
+  // if (authState.isPending) return null;
 
   const renderRedirect = (props) => {
-    return oktaAuth.isAuthenticated ? (
-      <Component {...props} />
-    ) : (
+    if (authState.isAuthenticated) {
+      return <Component {...props} />;
+    }
+    return (
       <Redirect
         to={{
           pathname: '/login',
