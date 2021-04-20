@@ -5,7 +5,7 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { oktaAuthConfig, oktaSignInConfig } from './config/config';
 import PrivateRoute from './components/private-route';
 import './scss/style.scss';
-import Home from './components/home';
+
 
 const loading = (
   <div className="pt-3 text-center">
@@ -16,8 +16,6 @@ const loading = (
 const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 const Login = React.lazy(() => import('./views/pages/login/Login'));
-
-const Register = React.lazy(() => import('./views/pages/register/Register'));
 
 const oktaAuth = new OktaAuth(oktaAuthConfig);
 

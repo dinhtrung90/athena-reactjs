@@ -14,6 +14,22 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavTitle',
+    _children: ['Population']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Employers',
+    to: '/population/employers',
+    icon: 'cil-people',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Eligible Population',
+    to: '/population/employers',
+    icon: 'cil-user',
+  },
+  {
+    _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
   {
