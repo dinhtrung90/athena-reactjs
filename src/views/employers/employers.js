@@ -46,6 +46,10 @@ const Employers = () => {
     currentPage !== page && setPage(currentPage);
   }, [currentPage, page]);
 
+  const navigationToEmployerCreation = () => {
+    history.push(`/employers/create`);
+  };
+
   return (
     <CRow>
       <CCol xl={12}>
@@ -58,7 +62,10 @@ const Employers = () => {
                 </h4>
               </CCol>
               <CCol sm="7" className="d-none d-md-block">
-                <CButton color="primary" className="float-right">
+                <CButton
+                  color="primary"
+                  className="float-right"
+                  onClick={navigationToEmployerCreation}>
                   <CIcon name="cil-pencil" />
                 </CButton>
               </CCol>
