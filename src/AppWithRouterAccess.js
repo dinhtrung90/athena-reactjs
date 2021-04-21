@@ -5,7 +5,7 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { oktaAuthConfig, oktaSignInConfig } from './config/config';
 import PrivateRoute from './components/private-route';
 import './scss/style.scss';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -32,6 +32,12 @@ const AppWithRouterAccess = () => {
 
   return (
     <React.Suspense fallback={loading}>
+      <ToastContainer
+        position={toast.POSITION.TOP_RIGHT}
+        className="toastify-container"
+        toastClassName="toastify-toast"
+      />
+
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customAuthHandler}

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { employerActions } from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CCard,
   CCardHeader,
@@ -11,10 +13,46 @@ import {
   CInputFile,
   CCardFooter,
   CButton,
+  CValidFeedback,
+  CInvalidFeedback,
+  CSpinner,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
 const EmployerCreation = () => {
+  const initialState = {
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    street: '',
+    city: '',
+    county: '',
+    creating: false,
+    success: false,
+  };
+
+  const [employer, setEmployer] = useState(initialState);
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const creating = useSelector((state) => state.employerCreation.creating);
+
+  const dispatch = useDispatch();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setEmployer((employer) => ({ ...employer, [name]: value }));
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    if (employer.name && employer.email && employer.phone) {
+      dispatch(employerActions.creatEmployer(employer));
+    }
+  };
+
   return (
     <>
       <CRow xl={12}>
@@ -28,42 +66,63 @@ const EmployerCreation = () => {
               <CFormGroup>
                 <CLabel htmlFor="clientName">Employer Name</CLabel>
                 <CInput
+                  // {...submitted && !employer.name && employer.name.length > 0 ? 'valid' : 'invalid'}
                   id="clientName"
+                  name="name"
                   placeholder="Enter your employer name"
+                  onChange={handleChange}
+                  value={employer.name}
                 />
+                {!employer.name && employer.name.length > 0 ? (
+                  <CValidFeedback>Employer name is valid</CValidFeedback>
+                ) : (
+                  <CInvalidFeedback>Employer name is invalid</CInvalidFeedback>
+                )}
               </CFormGroup>
               <CFormGroup>
                 <CLabel htmlFor="email-input">Email Input</CLabel>
                 <CInput
                   type="email"
                   id="email-input"
-                  name="email-input"
+                  name="email"
+                  onChange={handleChange}
+                  value={employer.email}
                   placeholder="Enter Email"
                   autoComplete="email"
                 />
               </CFormGroup>
-
+              <CFormGroup>
+                <CLabel htmlFor="phone-input">Phone Input</CLabel>
+                <CInput
+                  type="phone"
+                  id="phone-input"
+                  name="phone"
+                  onChange={handleChange}
+                  value={employer.phone}
+                  placeholder="Enter Phone"
+                />
+              </CFormGroup>
               <CFormGroup>
                 <CLabel htmlFor="street">Street</CLabel>
-                <CInput id="street" placeholder="Enter street name" />
-              </CFormGroup>
-              <CFormGroup row className="my-0">
-                <CCol xs="8">
-                  <CFormGroup>
-                    <CLabel htmlFor="city">City</CLabel>
-                    <CInput id="city" placeholder="Enter your city" />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="4">
-                  <CFormGroup>
-                    <CLabel htmlFor="postal-code">Postal Code</CLabel>
-                    <CInput id="postal-code" placeholder="Postal Code" />
-                  </CFormGroup>
-                </CCol>
+                <CInput
+                  id="street"
+                  placeholder="Enter street name"
+                  name="street"
+                  onChange={handleChange}
+                  value={employer.street}
+                />
               </CFormGroup>
               <CFormGroup>
-                <CLabel htmlFor="country">Country</CLabel>
-                <CInput id="country" placeholder="Country name" />
+                <CFormGroup>
+                  <CLabel htmlFor="city">City</CLabel>
+                  <CInput
+                    id="city"
+                    placeholder="Enter your city"
+                    name="city"
+                    onChange={handleChange}
+                    value={employer.city}
+                  />
+                </CFormGroup>
               </CFormGroup>
               <CFormGroup row>
                 <CLabel col md="2" htmlFor="file-input">
@@ -74,7 +133,14 @@ const EmployerCreation = () => {
                 </CCol>
               </CFormGroup>
               <CCardFooter>
-                <CButton type="submit" size="sm" color="primary">
+                <CButton
+                  type="submit"
+                  size="sm"
+                  color="primary"
+                  onSubmit={() => console.log('on submmit')}>
+                  {submitted && creating && (
+                    <CSpinner color="success" size="sm" />
+                  )}
                   <CIcon name="cil-scrubber" /> Submit
                 </CButton>
               </CCardFooter>
