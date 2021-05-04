@@ -9,7 +9,8 @@ import {
 const TheLayout = () => {
 
   return (
-    <div className="c-app c-default-layout">
+    <div>
+      <div className="c-app c-default-layout">
       <TheSidebar/>
       <div className="c-wrapper">
         <TheHeader/>
@@ -19,6 +20,8 @@ const TheLayout = () => {
         <TheFooter/>
       </div>
     </div>
+    </div>
+    
   )
 }
 

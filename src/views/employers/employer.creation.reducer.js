@@ -1,4 +1,4 @@
-import { employerConstants } from '../constants/index';
+import { employerConstants } from '../../constants/index';
 
 export function employerCreation(state = {}, action) {
   switch (action.type) {

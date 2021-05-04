@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { APP_TOKEN } from 'src/constants/constants';
-import { SERVER_API_URL } from './config';
+import { APP_TOKEN , BASE_URL} from 'src/constants/constants';
 import { toast } from 'react-toastify';
 
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
-axios.defaults.baseURL = SERVER_API_URL;
+axios.defaults.baseURL = BASE_URL;
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post["Access-Control-Allow-Methods"] = "DELETE, POST, GET, OPTIONS";
+axios.defaults.headers.post["Access-Control-Allow-Headers"] = "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With";
 
 const addErrorAlert = (message, key, data) => {
   toast.error(message);
@@ -13,7 +15,7 @@ const addErrorAlert = (message, key, data) => {
 
 const setupAxiosInterceptors = (onUnauthenticated) => {
   const onRequestSuccess = (config) => {
-    const token = localStorage.get(APP_TOKEN);
+    const token = localStorage.getItem(APP_TOKEN);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -23,8 +25,8 @@ const setupAxiosInterceptors = (onUnauthenticated) => {
 
   const onResponseError = (err) => {
     const response = err.response;
-    const data = response.data;
     const status = err.status || (response ? response.status : 0);
+    const data = response != null ?  response.data : {};
     switch (status) {
       // connection refused, server not reachable
       case 0:

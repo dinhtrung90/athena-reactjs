@@ -12,6 +12,19 @@ import { icons } from './assets/icons'
 import { Provider } from 'react-redux'
 import store from './store'
 
+import {bindActionCreators} from "redux";
+
+import setupAxiosInterceptors from "./shared/interceptors/axios-interceptor";
+
+import {clearAuthToken} from "./actions/index";
+
+require('dotenv').config()
+
+const actions = bindActionCreators({ clearAuthToken }, store.dispatch);
+
+setupAxiosInterceptors(() => actions.clearAuthToken());
+
+
 React.icons = icons
 
 ReactDOM.render(
